@@ -18,18 +18,22 @@ const highlighter = await getHighlighter({
     langs: ['jsx', 'js'],
     themes: ['min-dark']
 });
-const html = await new Marked()
-    .use(
-        markedShiki({
-            highlight(code, lang, props) {
-                return highlighter.codeToHtml(code, {
-                    lang,
-                    theme: 'min-dark'
-                });
-            }
-        })
-    )
-    .parse(content);
+const html = await new Promise((resolve) => {
+    setTimeout(() => {
+        resolve(new Marked()
+            .use(
+                markedShiki({
+                    highlight(code, lang, props) {
+                        return highlighter.codeToHtml(code, {
+                            lang,
+                            theme: 'min-dark'
+                        });
+                    }
+                })
+            )
+            .parse(content));
+    }, 4000);
+});
 ---
 
 <div class:list={['markdown', className]} set:html={html} />
